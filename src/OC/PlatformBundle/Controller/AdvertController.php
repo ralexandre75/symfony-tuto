@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AdvertController extends Controller
 {
-/*	public function indexAction($page)
+	public function indexAction($page)
 	{
 		// On ne sait pas combien de pages il y a
 		// Mais on sait qu'une page doit être supérieure ou égale à 1
@@ -28,21 +28,19 @@ class AdvertController extends Controller
 
 
 		//RECUPERATION DES DONNER DANS LA BASE
-		$em = $this->getDoctrine()->getManager();
-
-		$listAdverts = $em
+		$listAdverts = $this->getDoctrine()
+			->getManager()
 			->getRepository('OCPlatformBundle:Advert')
 			->findAll()
 		;
 
+		// L'appel de la vue ne change pas
 		return $this->render('OCPlatformBundle:Advert:index.html.twig', array(
 			'listAdverts' => $listAdverts
 		));
-    		
-
 }
 
-
+/*
 
 
 
@@ -119,7 +117,7 @@ class AdvertController extends Controller
 			->findby(array('advert' => $advert))
 			;
 
-		// On récupére maintenant la liste des AdvertSkill
+		// On récupére maintenant la liste des AdvertSkill de l'annonce
 		$listAdvertSkills = $em
 			->getRepository('OCPlatformBundle:AdvertSkill')
 			->findby(array('advert' => $advert))
@@ -226,7 +224,7 @@ class AdvertController extends Controller
 			$request->getSession()->getFlashbag()->add('notice', 'Annonce bien enregistrée.');
 
 			// Puis on redirige vers la page de visualisation de cettte annonce
-			return $this->redirectToRoute('oc_platform_view', array('id' => 5));
+			return $this->redirectToRoute('oc_platform_view', array('id' => $advert->getId()));
 
 		}
 
@@ -263,8 +261,10 @@ class AdvertController extends Controller
 		if($request->isMethod('POST')){
 			$request->getSession->getFlashbag()->add('notice', 'Annonce bien modifiée.');
 
-			return $this->redirectToRoute('oc_platform_view', array('id' => 5));
+			return $this->redirectToRoute('oc_platform_view', array('id' => $advert->getId()));
 		}
+
+		/*
 
 		$advert = array(
 			'title'  	=> 'Recherche développeur symfony',
@@ -273,6 +273,8 @@ class AdvertController extends Controller
 			'content'	=> 'Nous recherchons un développeur Symfony débutant sur Lyon Blabla...',
 			'date'		=> new \Datetime()
 		);
+
+		*/
 
 		return $this->render('OCPlatformBundle:Advert:edit.html.twig', array(
 			'advert'	=> $advert
@@ -321,8 +323,12 @@ class AdvertController extends Controller
 
 		$listAdverts = $em
 			->getRepository('OCPlatformBundle:Advert')
-			->findAll()
-		;
+			->findBy(
+				array(),						// Pas de critère
+				array('date' => 'desc'),		// On trie par date décroissante
+				$limit,							// On sélectionne $limit annonces
+				0								// À partir du premier
+			);
 
 		return $this->render('OCPlatformBundle:Advert:menu.html.twig', array(
 			// Tout l'intérêt est ici : le contrôleur passe
