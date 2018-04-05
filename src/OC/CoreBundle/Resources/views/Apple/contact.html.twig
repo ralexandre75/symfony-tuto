@@ -1,0 +1,21 @@
+{% extends 'OCCoreBundle::layout.html.twig' %}
+
+
+{% block title %}
+	Contact - {{ parent() }}
+{% endblock %}
+
+
+
+
+{% block body %}
+<h1>Page contact</h1>
+
+{% for message in app.session.flashbag.get('success') %}
+  <div class="alert alert-success">{{ message }}</div>
+{% endfor %}
+ 
+{% for message in app.session.flashbag.get('error') %}
+  <div class="alert alert-error">{{ message }}</div>
+{% endfor %}
+{% endblock %}

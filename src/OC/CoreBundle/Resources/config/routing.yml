@@ -1,0 +1,11 @@
+oc_core_homepage:
+    path:     /
+    defaults: { _controller: OCCoreBundle:Apple:index }
+
+oc_core_contact:
+    path:     /contact
+    defaults: { _controller: OCCoreBundle:Apple:contact }
+
+oc_core_test:
+    path:     /test
+    defaults: { _controller: OCCoreBundle:Apple:test }
